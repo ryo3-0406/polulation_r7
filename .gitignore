@@ -1,0 +1,23 @@
+# 仮想環境
+venv*/
+.venv*
+
+# Pythonの実行時に自動生成されるキャッシュ（.py のソースコード自体は対象外）
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE・エディタ
+.idea/
+*.iml
+.vscode/
+.devcontainer
+
+# OS
+.DS_Store
+
+# Excelで開いている間にできるロックファイル
+~$*
+
+# Streamlitの秘密情報
+.streamlit/secrets.toml
