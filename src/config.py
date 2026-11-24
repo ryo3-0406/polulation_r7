@@ -23,3 +23,20 @@ REGIONS = {
     "関西(2府4県)": ["滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県"],
     "福岡(2県)": ["福岡県", "佐賀県"],
 }
+
+# 画面・Excelでの表示名
+NAT_LABELS = {1: "日本人のみ", 0: "外国人含む"}  # flag_japanese → 表示名（0 は e-Stat の「国籍総数」）
+SEX_LABELS = {"男女": "男女計", "男": "男", "女": "女"}
+
+# 出典
+ESTAT_URL = "https://www.e-stat.go.jp/"
+CENSUS_URL = (
+    "https://www.e-stat.go.jp/stat-search/files?page=1&layout=datalist&toukei=00200521&tstat=000001230925"
+    "&cycle=0&year=20250&month=24101210&tclass1=000001230926&tclass2=000001232187"
+)
+
+# 更新情報（新しい順）
+UPDATE_HISTORY = [
+    "2026/11/24(火)：都道府県別・男女年齢各歳のローデータ出力を追加、画面を改善",
+    "2026/10/05(月)：令和7年国勢調査の結果に更新",
+]

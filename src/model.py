@@ -19,10 +19,7 @@ class Population:
         if not 0 <= age_min <= age_max <= AGE_MAX:
             raise ValueError(f"年齢の範囲が不正です: {age_min}～{age_max}")
 
-        df = self.df_age
-        df = df[df["地域名"].isin(area)]
-        df = df[df["sex"] == sex]
-        df = df[df["国籍総数か日本人"] == NATIONALITY[flag_japanese]]
+        df = self._age_rows(area, sex, flag_japanese)
 
         result = df.loc[:, age_min:age_max].to_numpy().sum()
 
@@ -36,11 +33,20 @@ class Population:
 
         return int(result)
 
-    def unknown_age_count(self, flag_japanese=0):
-        """全国の年齢不詳人口（集計から除外される人数）"""
+    def unknown_age_count(self, flag_japanese=0, area=("全国",), sex="男女"):
+        """年齢不詳人口（年齢別の集計からは除外される人数）"""
+        return int(self._age_rows(area, sex, flag_japanese)["不詳"].sum())
+
+    def total_count(self, flag_japanese=0, area=("全国",), sex="男女"):
+        """総数（年齢不詳を含む人口）"""
+        return int(self._age_rows(area, sex, flag_japanese)["all"].sum())
+
+    def _age_rows(self, area, sex, flag_japanese):
         df = self.df_age
-        df = df[(df["地域名"] == "全国") & (df["sex"] == "男女") & (df["国籍総数か日本人"] == NATIONALITY[flag_japanese])]
-        return int(df["不詳"].sum())
+        df = df[df["地域名"].isin(area)]
+        df = df[df["sex"] == sex]
+        df = df[df["国籍総数か日本人"] == NATIONALITY[flag_japanese]]
+        return df
 
     def area_list(self, flag_household=0):
 
