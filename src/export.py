@@ -67,7 +67,7 @@ def _area_notes():
     return [(f"主要エリア：{name}", "、".join(prefs)) for name, prefs in REGIONS.items()]
 
 
-def raw_notes(date_text):
+def raw_notes():
     jp, all_ = NAT_LABELS[1], NAT_LABELS[0]
     return [
         ("内容", "全国・47都道府県・主要エリア別、男女別、年齢（各歳）別の人口"),
@@ -85,7 +85,6 @@ def raw_notes(date_text):
         ("出典", "政府統計の総合窓口（e-Stat）「令和7年国勢調査 人口等基本集計」"
                "第2-1表 男女、年齢（各歳）、国籍総数か日本人別人口"),
         ("URL", CENSUS_URL),
-        ("出力日", date_text),
     ]
 
 
@@ -137,7 +136,7 @@ def _write_notes(writer, fmt, notes):
     ws.set_column(1, 1, 110, fmt["wrap"])
 
 
-def build_raw_workbook(model, date_text):
+def build_raw_workbook(model):
     """ローデータのExcel（bytes）"""
     number_cols = set(RAW_TOTAL_COLS) | {age_label(a) for a in AGES}
     widths = {"区分": 11, "地域コード": 10, "地域名": 14, "性別": 8, "総数": 13, "年齢不詳": 11, "年齢不詳を除く計": 13}
@@ -146,7 +145,7 @@ def build_raw_workbook(model, date_text):
         fmt = _formats(writer.book)
         for sheet, df in raw_tables(model).items():
             _write_table(writer, fmt, sheet, df, number_cols, widths, freeze_cols=len(RAW_KEY_COLS))
-        _write_notes(writer, fmt, raw_notes(date_text))
+        _write_notes(writer, fmt, raw_notes())
     return output.getvalue()
 
 

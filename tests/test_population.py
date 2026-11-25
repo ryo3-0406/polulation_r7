@@ -226,7 +226,7 @@ class TestRawExport(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.ref = ExcelReference()
-        cls.sheets = read_workbook(build_raw_workbook(Population(), "2026/01/01"))
+        cls.sheets = read_workbook(build_raw_workbook(Population()))
 
     def test_sheets(self):
         self.assertEqual(list(self.sheets), ["日本人のみ", "外国人含む", "注記"])
@@ -268,9 +268,9 @@ class TestRawExport(unittest.TestCase):
 
     def test_notes(self):
         notes = dict(self.sheets["注記"][1:])
-        for key in ["シート「日本人のみ」", "シート「外国人含む」", "年齢不詳", "出典", "出力日"]:
+        for key in ["シート「日本人のみ」", "シート「外国人含む」", "年齢不詳", "出典"]:
             self.assertIn(key, notes)
-        self.assertEqual(notes["出力日"], "2026/01/01")
+        self.assertNotIn("出力日", notes)  # ローデータは出力日によって内容が変わらないため載せない
 
 
 class TestSummaryExport(unittest.TestCase):

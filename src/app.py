@@ -36,8 +36,8 @@ def load_model():
 
 
 @st.cache_data(show_spinner="ローデータを作成しています…")
-def raw_workbook(date_text):
-    return build_raw_workbook(load_model(), date_text)
+def raw_workbook():
+    return build_raw_workbook(load_model())
 
 
 @st.cache_data
@@ -272,7 +272,7 @@ def render_calc_tab(model, now):
     st.caption("※ 年齢不詳の人口は集計に含みません。定義や出典は「注記・出典」タブをご覧ください。")
 
 
-def render_raw_tab(model, now):
+def render_raw_tab(model):
     st.markdown("#### 都道府県別・男女年齢各歳の人口（ローデータ）")
     st.markdown(
         f"全国・47都道府県・主要エリアの人口を、男女別・年齢各歳（0歳～{AGE_MAX}歳以上）で1つのExcelファイルに出力します。  \n"
@@ -286,8 +286,8 @@ def render_raw_tab(model, now):
         col.metric(f"うち年齢不詳（全国・{NAT_LABELS[flag]}）", f"{model.unknown_age_count(flag):,} 人")
 
     st.download_button(
-        "ローデータをダウンロード（Excel）", data=raw_workbook(f"{now:%Y/%m/%d}"),
-        file_name=f"令和7年国勢調査_都道府県別_男女年齢各歳人口_{now:%y%m%d}.xlsx", mime=XLSX_MIME,
+        "ローデータをダウンロード（Excel）", data=raw_workbook(),
+        file_name="令和7年国勢調査_都道府県別_男女年齢各歳人口.xlsx", mime=XLSX_MIME,
         type="primary", icon=":material/download:", on_click="ignore", key="download_raw",
     )
 
@@ -370,7 +370,7 @@ def main():
     with tab_calc:
         render_calc_tab(model, now)
     with tab_raw:
-        render_raw_tab(model, now)
+        render_raw_tab(model)
     with tab_notes:
         render_notes_tab(model)
 
